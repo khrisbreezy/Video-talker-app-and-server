@@ -105,7 +105,9 @@ const callReducer = (state = initialState, action) => {
         ...state,
         groupCallActive: false,
         groupStreams: [],
-        callState: callStates.CALL_UNAVAILABLE,
+        callState: callStates.CALL_AVAILABLE,
+        localMicrophoneEnabled: true,
+        localCameraEnabled: true
       }
 
     default:

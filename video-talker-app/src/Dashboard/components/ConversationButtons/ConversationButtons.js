@@ -31,7 +31,7 @@ const styles = {
 };
 
 
-const ConversationButtons = ({localMicrophoneEnabled, localCameraEnabled, screenSharing}) => {
+const ConversationButtons = ({localMicrophoneEnabled, localCameraEnabled, screenSharing, groupCall}) => {
     const dispatch = useDispatch();
 
     const localStream = useSelector(state => state.call.localStream);
@@ -61,15 +61,15 @@ const ConversationButtons = ({localMicrophoneEnabled, localCameraEnabled, screen
             <ConversionButton onClickHandler={handleMicButtonHandler}>
                 {localMicrophoneEnabled ? <MdMic style={styles.icon} /> : <MdMicOff style={styles.icon} />}
             </ConversionButton>
-            <ConversionButton onClickHandler={endCallHandler}>
+            {!groupCall && <ConversionButton onClickHandler={endCallHandler}>
                 <MdCallEnd style={styles.icon} />
-            </ConversionButton>
+            </ConversionButton>}
             <ConversionButton onClickHandler={handlerCameraButtonHandler}>
                 {localCameraEnabled ? <MdVideocam style={styles.icon} /> : <MdVideocamOff style={styles.icon} />}
             </ConversionButton>
-            <ConversionButton onClickHandler={screenSharingHandler}>
+            {!groupCall && <ConversionButton onClickHandler={screenSharingHandler}>
                 {!screenSharing ? <MdOutlineScreenShare style={styles.icon} /> : <MdOutlineStopScreenShare style={styles.icon} />}
-            </ConversionButton>
+            </ConversionButton>}
         </div>
     );
 };

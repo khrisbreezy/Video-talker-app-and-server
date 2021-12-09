@@ -95,6 +95,12 @@ export const clearGroupData = () => {
     store.dispatch(clearGroupCallData());
     mypeer.destroy();
     connectWithPeer();
+
+    const localStream = store.getState().call.localStream;
+
+    localStream.getVideoTracks()[0].enabled = true;
+    localStream.getAudioTracks()[0].enabled = true;
+
 }
 
 export const removeInactiveSteam = (data) => {

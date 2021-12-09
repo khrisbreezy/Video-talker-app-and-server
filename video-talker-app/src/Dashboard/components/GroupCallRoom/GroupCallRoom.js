@@ -26,6 +26,7 @@ const GroupCallRoom = () => {
         localMicrophoneEnabled={localMicrophoneEnabled}
         localCameraEnabled={localCameraEnabled}
         screenSharing={screenSharing}
+        groupCall
       />
     </div>
   );
