@@ -12,7 +12,12 @@ import {
   handleCandidate,
   handleUserHangedUp,
 } from "../webRTC/webRTCHandler";
-import { connectToNewUser } from "../webRTC/webRTCGroupCallHandler";
+import {
+  connectToNewUser,
+  removeInactiveSteam,
+  checkActiveGroupCall,
+  clearGroupData,
+} from "../webRTC/webRTCGroupCallHandler";
 
 const SERVER = "http://localhost:5000";
 
@@ -68,7 +73,11 @@ export const connectWithWebSocket = () => {
   // Event listeners related to group call requests
   socket.on("user-request-groupcall-join", (data) => {
     connectToNewUser(data);
-  })
+  });
+
+  socket.on("group-call-user-left", (data) => {
+    removeInactiveSteam(data);
+  });
 };
 
 export const registerNewUser = (username) => {
@@ -87,7 +96,19 @@ const handleBroadcastEvents = (data) => {
       store.dispatch(saveActiveUsers(activeUsers));
       break;
     case broadcastEventTypes.GROUP_CALL_ROOMS:
-      store.dispatch(saveActiveRooms(data.groupCallRooms));
+      const groupCallRooms = data.groupCallRooms.filter(
+        (room) => room.socketId !== socket.id
+      );
+      const activeGroupCallRoomsId = checkActiveGroupCall();
+      if (activeGroupCallRoomsId) {
+        const room = groupCallRooms.find(
+          (room) => room.roomId === activeGroupCallRoomsId
+        );
+        if (!room) {
+          clearGroupData();
+        }
+      }
+      store.dispatch(saveActiveRooms(groupCallRooms));
       break;
     default:
       return;
@@ -125,5 +146,13 @@ export const registerGroupCall = (data) => {
 };
 
 export const userWantsToJoinGroupCall = (data) => {
-    socket.emit("user-request-groupcall-join", data);
-}
+  socket.emit("user-request-groupcall-join", data);
+};
+
+export const userLeftGroupCall = (data) => {
+  socket.emit("group-call-user-left", data);
+};
+
+export const closeGroupCallByHost = (data) => {
+  socket.emit("close-group-call-by-host", data);
+};

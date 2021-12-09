@@ -8,7 +8,9 @@ export const SET_LOCAL_MICROPHONE_ENABLED = 'SET_LOCAL_MICROPHONE_ENABLED';
 export const SET_LOCAL_CAMERA_ENABLED = 'SET_LOCAL_CAMERA_ENABLED';
 export const SET_SCREEN_SHARING_ACTIVE = 'SET_SCREEN_SHARING_ACTIVE';
 export const SET_RESET_CALL_DATA = 'SET_RESET_CALL_DATA';
-export const SET_GROUP_CALL_ACTIVE = 'SET_GROUP_CALL_ACTIVE'
+export const SET_GROUP_CALL_ACTIVE = 'SET_GROUP_CALL_ACTIVE';
+export const SET_GROUP_CALL_STREAM = 'SET_GROUP_CALL_STREAM';
+export const CLEAR_GROUP_DATA = 'CLEAR_GROUP_DATA';
 
 export const callStates = {
     CALL_UNAVAILABLE: 'CALL_UNAVAILABLE',
@@ -73,4 +75,13 @@ export const setResetCallData = () => ({
 export const setGroupCallActive = (active) => ({
     type: SET_GROUP_CALL_ACTIVE,
     active
-})
+});
+
+export const setGroupCallStream = (stream) => ({
+    type: SET_GROUP_CALL_STREAM,
+    stream
+});
+
+export const clearGroupCallData = () => ({
+    type: 'CLEAR_GROUP_DATA'
+});

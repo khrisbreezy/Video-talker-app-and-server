@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 
 import { callStates } from "../../../store/actions/call";
-import { createGroupCall } from "../../../utils/webRTC/webRTCGroupCallHandler";
+import { createGroupCall, leaveGroupCall } from "../../../utils/webRTC/webRTCGroupCallHandler";
 import GroupCallButton from "../GroupCallButton/GroupCallButton";
 import GroupCallRoom from "../GroupCallRoom/GroupCallRoom";
 
@@ -16,12 +16,17 @@ const GroupCall = () => {
       createGroupCall();
   };
 
+  const leaveRoom = () => {
+    leaveGroupCall();
+  }
+
   return (
     <>
       {(!groupCallActive && localStream && callState !== callStates.CALL_IN_PROGRESS) && (
         <GroupCallButton onClickHandler={createRoom} label={"Create room"} />
       )}
       {groupCallActive && <GroupCallRoom />}
+      {groupCallActive && <GroupCallButton onClickHandler={leaveRoom} label={"Leave room"} />}
     </>
   );
 };

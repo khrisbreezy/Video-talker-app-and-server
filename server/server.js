@@ -75,8 +75,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         peers = peers.filter(peer => peer.socketId !== socket.id);
         groupCallRooms = groupCallRooms.filter(groups => groups.socketId !== socket.id);
-        console.log({peers});
-        console.log({groupCallRooms});
         io.sockets.emit('broadcast', {
             event: broadcastEventTypes.ACTIVE_USERS,
             activeUsers: peers
@@ -161,4 +159,20 @@ io.on('connection', (socket) => {
         socket.join(data.roomId);
     });
 
+    // Listeners for a user to leave the group call
+    socket.on('group-call-user-left', (data) => {
+        socket.leave(data.roomId);
+        io.to(data.roomId).emit('group-call-user-left', {
+            streamId: data.streamId
+        });
+    });
+
+    // Listeners for a host to close the group call
+    socket.on('close-group-call-by-host', (data) => {
+        groupCallRooms = groupCallRooms.filter(rooms => rooms.peerId !== data.peerId);
+        io.emit('broadcast', {
+            event: broadcastEventTypes.GROUP_CALL_ROOMS,
+            groupCallRooms
+        });
+    });
 });

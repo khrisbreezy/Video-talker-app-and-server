@@ -9,8 +9,6 @@ const ActiveUsersListItem = (props) => {
 
   const callState = useSelector(state => state.call.callState);
 
-  console.log({callState});
-
   const handleListItemPressed = () => {
     if (callState === callStates.CALL_AVAILABLE) {
       callToOther(activeUser);

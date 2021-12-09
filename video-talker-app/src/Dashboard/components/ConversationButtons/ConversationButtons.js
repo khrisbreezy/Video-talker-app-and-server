@@ -36,25 +36,16 @@ const ConversationButtons = ({localMicrophoneEnabled, localCameraEnabled, screen
 
     const localStream = useSelector(state => state.call.localStream);
 
-    console.log({localMicrophoneEnabled});
-    console.log({localCameraEnabled});
-
-    console.log({localStream});
-
     const handleMicButtonHandler = () => {
         const micEnabled = localMicrophoneEnabled;
         localStream.getAudioTracks()[0].enabled = !micEnabled;
         dispatch(setLocalMicrophoneEnabled(!micEnabled));
-
-        console.log({micEnabled});
     };
 
     const handlerCameraButtonHandler = () => {
         const cameraEnabled = localCameraEnabled;
         localStream.getVideoTracks()[0].enabled = !cameraEnabled;
         dispatch(setLocalCameraEnabled(!cameraEnabled));
-
-        console.log({cameraEnabled});
     };
 
     const screenSharingHandler = () => {

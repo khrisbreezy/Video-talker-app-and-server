@@ -10,7 +10,9 @@ import {
   SET_LOCAL_MICROPHONE_ENABLED,
   SET_SCREEN_SHARING_ACTIVE,
   SET_RESET_CALL_DATA,
-  SET_GROUP_CALL_ACTIVE
+  SET_GROUP_CALL_ACTIVE,
+  SET_GROUP_CALL_STREAM,
+  CLEAR_GROUP_DATA
 } from "../actions/call";
 
 const initialState = {
@@ -26,7 +28,8 @@ const initialState = {
   localMicrophoneEnabled: true,
   localCameraEnabled: true,
   screenSharing: false,
-  groupCallActive: false
+  groupCallActive: false,
+  groupStreams: []
 };
 
 const callReducer = (state = initialState, action) => {
@@ -91,6 +94,18 @@ const callReducer = (state = initialState, action) => {
       return {
         ...state,
         groupCallActive: action.active
+      }
+    case SET_GROUP_CALL_STREAM:
+      return {
+        ...state,
+        groupStreams: action.stream
+      }
+    case CLEAR_GROUP_DATA:
+      return {
+        ...state,
+        groupCallActive: false,
+        groupStreams: [],
+        callState: callStates.CALL_UNAVAILABLE,
       }
 
     default:
